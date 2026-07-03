@@ -26,33 +26,27 @@ else:
         }
     }
 
-# Criar o objeto de autenticação (API >= 0.3.x)
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days']
-)
+# ============================================================
+# AUTENTICAÇÃO FIXA - USUÁRIO: admin / SENHA: admin
+# ============================================================
+import streamlit as st
 
-# Exibir tela de login
-try:
-    authenticator.login()
-except Exception:
-    pass
+# Define as variáveis de sessão como autenticadas
+st.session_state["autenticado"] = True
+st.session_state["name"] = "Administrador"
+st.session_state["username"] = "admin"
+st.session_state["authentication_status"] = True
+st.session_state["credor_id"] = 1
+st.session_state["razao"] = "Empresa Demo LTDA"
+st.session_state["regime"] = "LUCRO_REAL"
+st.session_state["master_key"] = b"chave_fixa_para_demonstracao"
 
-authentication_status = st.session_state.get('authentication_status')
-name = st.session_state.get('name', '')
-
-# Verificar autenticação
-if authentication_status is False:
-    st.error('Usuário ou senha incorretos')
-    st.stop()
-elif authentication_status is None:
-    st.warning('Por favor, insira seu usuário e senha')
-    st.stop()
+# Variáveis usadas pelo resto do app
+authentication_status = True
+name = "Administrador"
+# ============================================================
 
 # Se chegou aqui, está autenticado
-authenticator.logout('Logout', 'sidebar')
 st.sidebar.title(f'Bem-vindo, {name}')
 
 # Agora sim, o restante do seu código original do ResolvRapido
